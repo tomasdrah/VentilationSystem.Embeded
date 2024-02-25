@@ -1,10 +1,10 @@
 #include <Arduino.h>
-#include "Embedded/Fd/Windows/WinIoPin.h"
-#include "Embedded/Fd/Arduino/ArdIoPin.h"
+#include "Embedded/Fd/Windows/Win_IoPin.h"
+#include "Embedded/Fd/Arduino/Ard_IoPin.h"
 
-TdEmbeddedFd::WinIoPin _Wpin = TdEmbeddedFd::WinIoPin();
-TdEmbeddedFd::ArdIoPin _Apin = TdEmbeddedFd::ArdIoPin(LED_BUILTIN,OUTPUT );
-TdEmbeddedFd::ArdIoPin _A_analog_pin = TdEmbeddedFd::ArdIoPin(A0,INPUT );
+TdEmbeddedFd::Win_IoPin _Wpin = TdEmbeddedFd::Win_IoPin();
+TdEmbeddedFd::Ard_IoPin _Apin = TdEmbeddedFd::Ard_IoPin(LED_BUILTIN, OUTPUT );
+TdEmbeddedFd::Ard_IoPin _A_analog_pin = TdEmbeddedFd::Ard_IoPin(A0, INPUT );
 
 TdEmbeddedFd::PinState testGetState(TdEmbeddedFd::IoPin *pin) {
     return pin->getState();

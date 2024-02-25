@@ -2,17 +2,17 @@
 // Created by drahonovsky on 25.02.2024.
 //
 
-#ifndef VENTILATIONSYSTEM_EMBEDDED_WINIOPIN_H
-#define VENTILATIONSYSTEM_EMBEDDED_WINIOPIN_H
+#ifndef VENTILATIONSYSTEM_EMBEDDED_WIN_IOPIN_H
+#define VENTILATIONSYSTEM_EMBEDDED_WIN_IOPIN_H
 
 #include "Embedded/Fd/Headers/IoPin.h"
 
 namespace TdEmbeddedFd {
 
-    class WinIoPin : public IoPin {
+    class Win_IoPin : public IoPin {
     public:
 
-        WinIoPin() {}
+        Win_IoPin() {}
 
         PinState getState() override {
             return (analogValue > 50) ? PinState::On : PinState::Off;
@@ -44,4 +44,4 @@ namespace TdEmbeddedFd {
 
 } // TdEmbeddedFd
 
-#endif //VENTILATIONSYSTEM_EMBEDDED_WINIOPIN_H
+#endif //VENTILATIONSYSTEM_EMBEDDED_WIN_IOPIN_H

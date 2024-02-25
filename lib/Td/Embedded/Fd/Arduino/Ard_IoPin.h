@@ -2,19 +2,19 @@
 // Created by drahonovsky on 25.02.2024.
 //
 
-#ifndef VENTILATIONSYSTEM_EMBEDDED_ARDIOPIN_H
-#define VENTILATIONSYSTEM_EMBEDDED_ARDIOPIN_H
+#ifndef VENTILATIONSYSTEM_EMBEDDED_ARD_IOPIN_H
+#define VENTILATIONSYSTEM_EMBEDDED_ARD_IOPIN_H
 
 #include "Embedded/Fd/Headers/IoPin.h"
 #include <Arduino.h>
 
 namespace TdEmbeddedFd {
 
-    class ArdIoPin : public IoPin {
+    class Ard_IoPin : public IoPin {
 
     public:
         // Constructor
-        ArdIoPin(int pinNumber, char mode) : pinNumber(pinNumber) {
+        Ard_IoPin(int pinNumber, char mode) : pinNumber(pinNumber) {
             // Setup Arduino pin mode here if necessary
             pinMode(pinNumber, mode);
         }
@@ -53,4 +53,4 @@ namespace TdEmbeddedFd {
 
 } // TdEmbeddedFd
 
-#endif //VENTILATIONSYSTEM_EMBEDDED_ARDIOPIN_H
+#endif //VENTILATIONSYSTEM_EMBEDDED_ARD_IOPIN_H
