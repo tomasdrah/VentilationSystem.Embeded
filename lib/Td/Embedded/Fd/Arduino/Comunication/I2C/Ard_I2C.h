@@ -6,11 +6,11 @@
 #define VENTILATIONSYSTEM_EMBEDDED_ARD_I2C_H
 
 #include <Wire.h>
-#include "Embedded/Fd/Headers/Comunication/I2C/I2C.h"
+#include "Embedded/Fd/Bases/Comunication/I2C/I2C.h"
 
 namespace TdEmbeddedFd {
 
-    class Ard_I2C:I2C {
+    class Ard_I2C:public I2C {
         bool TryToInitializeAsMaster() override {
             Wire.begin();
             return true;

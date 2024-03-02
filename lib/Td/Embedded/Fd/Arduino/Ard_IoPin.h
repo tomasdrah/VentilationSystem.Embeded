@@ -5,7 +5,7 @@
 #ifndef VENTILATIONSYSTEM_EMBEDDED_ARD_IOPIN_H
 #define VENTILATIONSYSTEM_EMBEDDED_ARD_IOPIN_H
 
-#include "Embedded/Fd/Headers/IoPin.h"
+#include "Embedded/Fd/Bases/IoPin.h"
 #include <Arduino.h>
 
 namespace TdEmbeddedFd {

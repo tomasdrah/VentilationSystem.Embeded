@@ -5,14 +5,14 @@
 #ifndef VENTILATIONSYSTEM_EMBEDDED_WIN_IOPIN_H
 #define VENTILATIONSYSTEM_EMBEDDED_WIN_IOPIN_H
 
-#include "Embedded/Fd/Headers/IoPin.h"
+#include "Embedded/Fd/Bases/IoPin.h"
 
 namespace TdEmbeddedFd {
 
-    class Win_IoPin : public IoPin {
+    class Ind_IoPin : public IoPin {
     public:
 
-        Win_IoPin() {}
+        Ind_IoPin() = default;
 
         PinState getState() override {
             return (analogValue > 50) ? PinState::On : PinState::Off;

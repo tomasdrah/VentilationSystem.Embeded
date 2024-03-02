@@ -5,13 +5,13 @@
 #ifndef VENTILATIONSYSTEM_EMBEDDED_WIN_STEPPINGTHERMOMETER_H
 #define VENTILATIONSYSTEM_EMBEDDED_WIN_STEPPINGTHERMOMETER_H
 
-#include "Embedded/Fd/Headers/Thermometers/Thermometer.h"
+#include "Embedded/Fd/Bases/Thermometers/Thermometer.h"
 
 namespace TdEmbeddedFd {
 
-    class Win_SteppingThermometer : Thermometer {
+    class Ind_SteppingThermometer : Thermometer {
     public:
-        explicit Win_SteppingThermometer(
+        explicit Ind_SteppingThermometer(
                 float currentTemp=40,
                 float minTemp=30,
                 float maxTemp=50,

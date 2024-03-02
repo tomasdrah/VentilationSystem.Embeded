@@ -5,14 +5,14 @@
 #ifndef VENTILATIONSYSTEM_EMBEDDED_ARD_BMP280_H
 #define VENTILATIONSYSTEM_EMBEDDED_ARD_BMP280_H
 
-#include "Embedded/Fd/Headers/Thermometers/Thermometer.h"
+#include "Embedded/Fd/Bases/Thermometers/Thermometer.h"
 #include <Wire.h>
 #include "Adafruit_Sensor.h"
 #include "Adafruit_BMP280.h"
 
 namespace TdEmbeddedFd {
 
-    class Ard_Bmp280 : Thermometer {
+    class Ard_Bmp280 :public  Thermometer {
     public:
 
         Ard_Bmp280() = default;
