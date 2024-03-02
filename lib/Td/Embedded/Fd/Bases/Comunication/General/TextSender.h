@@ -11,7 +11,7 @@ namespace TdEmbeddedFd {
     public:
         virtual bool SendText(char *text, unsigned char length) = 0;
 
-        bool SendText(const char *str) {
+        bool SendTextConst(const char *str) {
             return SendText((char *) str, strlen(str));
         }
 

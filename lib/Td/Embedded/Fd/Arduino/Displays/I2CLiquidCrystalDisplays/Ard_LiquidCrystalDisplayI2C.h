@@ -11,11 +11,18 @@
 
 namespace TdEmbeddedFd {
 
-    class Ard_LiquidCrystalDisplayI2C:public TextSender {
+    class Ard_LiquidCrystalDisplayI2C : public TextSender {
     public:
+        Ard_LiquidCrystalDisplayI2C() {}
+
+        explicit Ard_LiquidCrystalDisplayI2C(signed char lcdAddress) : LcdAddress(lcdAddress) {}
+
+        Ard_LiquidCrystalDisplayI2C(signed char lcdAddress, const LiquidCrystal_I2C &lcd, signed char useLine)
+                : LcdAddress(lcdAddress), lcd(lcd), UseLine(useLine) {}
+
         bool SendText(char *text, unsigned char length) override {
             lcd.clear();
-            lcd.setCursor(0, 0);
+            lcd.setCursor(UseLine, 0);
             lcd.print(text);
             return true;
         }
@@ -27,8 +34,9 @@ namespace TdEmbeddedFd {
         }
 
     private:
-        LiquidCrystal_I2C lcd = LiquidCrystal_I2C(0x27, 16, 2); // Change to (0x27,20,4) for 20x4 LCD.
-
+        signed char LcdAddress = 0x27;
+        LiquidCrystal_I2C lcd = LiquidCrystal_I2C(LcdAddress, 16, 2); // Change to (0x27,20,4) for 20x4 LCD.
+        signed char UseLine = 0;
     };
 
 } // TdEmbeddedFd
