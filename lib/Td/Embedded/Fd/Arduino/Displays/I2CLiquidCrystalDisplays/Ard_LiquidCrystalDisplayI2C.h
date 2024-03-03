@@ -13,30 +13,33 @@ namespace TdEmbeddedFd {
 
     class Ard_LiquidCrystalDisplayI2C : public TextSender {
     public:
-        Ard_LiquidCrystalDisplayI2C() {}
 
-        explicit Ard_LiquidCrystalDisplayI2C(signed char lcdAddress) : LcdAddress(lcdAddress) {}
-
-        Ard_LiquidCrystalDisplayI2C(signed char lcdAddress, const LiquidCrystal_I2C &lcd, signed char useLine)
-                : LcdAddress(lcdAddress), lcd(lcd), UseLine(useLine) {}
+        Ard_LiquidCrystalDisplayI2C(LiquidCrystal_I2C *lcd, signed char useLine)
+                : lcd(lcd), UseLine(useLine) {}
 
         bool SendText(char *text, unsigned char length) override {
-            lcd.clear();
-            lcd.setCursor(UseLine, 0);
-            lcd.print(text);
+            clearLine(UseLine);
+            lcd->setCursor(0, UseLine);
+            lcd->print(text);
             return true;
         }
 
         bool TryToInitialize() {
-            lcd.init();
-            lcd.backlight();
+            lcd->init();
+            lcd->backlight();
             return true;
         }
 
     private:
-        signed char LcdAddress = 0x27;
-        LiquidCrystal_I2C lcd = LiquidCrystal_I2C(LcdAddress, 16, 2); // Change to (0x27,20,4) for 20x4 LCD.
+        LiquidCrystal_I2C *lcd; // LiquidCrystal_I2C(LcdAddress, 16, 2) -- Change to (0x27,20,4) for 20x4 LCD.
         signed char UseLine = 0;
+
+        void clearLine(int line) {
+            lcd->setCursor(0, line);
+            for (int i = 0; i < 16; ++i) {
+                lcd->print(" ");
+            }
+        }
     };
 
 } // TdEmbeddedFd

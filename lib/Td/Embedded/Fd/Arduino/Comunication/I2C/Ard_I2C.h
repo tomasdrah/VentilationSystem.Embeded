@@ -7,19 +7,30 @@
 
 #include <Wire.h>
 #include "Embedded/Fd/Bases/Comunication/I2C/I2C.h"
+#include <arduino.h>
 
 namespace TdEmbeddedFd {
 
-    class Ard_I2C:public I2C {
-        bool TryToInitializeAsMaster() override {
-            Wire.begin();
+    class Ard_I2C : public I2C {
+    public:
+        explicit Ard_I2C(int timeoutMs)
+                : I2C(timeoutMs,
+                      -1) {}
+
+        explicit Ard_I2C(int timeoutMs,
+                         unsigned char deviceAddress)
+                : I2C(timeoutMs,
+                      deviceAddress) {}
+
+
+        bool TryToInitialize() override {
+            if (deviceAddress > 0)
+                Wire.begin(deviceAddress);
+            else
+                Wire.begin();
             return true;
         }
 
-        bool TryToInitializeAsSlave(unsigned char deviceAddress) override {
-            Wire.begin(deviceAddress);
-            return true;
-        }
 
         void BeginTransmission(unsigned char deviceAddress) override {
             Wire.beginTransmission(deviceAddress);
@@ -34,15 +45,19 @@ namespace TdEmbeddedFd {
         }
 
         void Write(unsigned char byte) override {
+            Wire.flush()
             Wire.write(byte);
         }
 
         void Write(unsigned char *bytes, unsigned char length) override {
-            Wire.write(bytes,length);
+            Wire.write(bytes, length);
         }
 
-        void OnReceiveEvent(void (*callback)(int)) override {
+        void RegisterOnReceiveEvent(void (*callback)(int)) override {
             Wire.onReceive(callback);
+        }
+        void RegisterOnRequestEvent(void (*callback)(void)) override {
+            Wire.onRequest(callback);
         }
 
         unsigned char AvailableBytes() override {
@@ -52,9 +67,12 @@ namespace TdEmbeddedFd {
         unsigned char ReadNextByte() override {
             return Wire.read();
         }
+
         unsigned char PeekNextByte() override {
             return Wire.peek();
         }
+
+    private:
     };
 
 } // TdEmbeddedFd

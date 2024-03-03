@@ -12,7 +12,6 @@
 namespace TdEmbeddedFd {
 
 
-
     class Setting {
     public:
         signed char value;
@@ -42,6 +41,7 @@ namespace TdEmbeddedFd {
         }
 
         bool TryToTryToInitialize() {
+            RefreshDisplayedSetting();
             return true;
         }
 
@@ -112,7 +112,7 @@ namespace TdEmbeddedFd {
             if (PreviousButton->IsPressedEvent()) {
                 CurrentlyDisplayedSetting--;
                 if (CurrentlyDisplayedSetting < 0) {
-                    CurrentlyDisplayedSetting = 0;
+                    CurrentlyDisplayedSetting = (signed char) (SettingsSize - 1);
                 }
                 RefreshDisplayedSetting();
             }
@@ -124,7 +124,7 @@ namespace TdEmbeddedFd {
                 RefreshDisplayedSetting();
             }
             if (UpButton->IsLongPressedContinuousEvent()) {
-                ChangeSettingValueBy(10);
+                ChangeSettingValueBy(1);
                 RefreshDisplayedSetting();
             }
         }
@@ -135,7 +135,7 @@ namespace TdEmbeddedFd {
                 RefreshDisplayedSetting();
             }
             if (DownButton->IsLongPressedContinuousEvent()) {
-                ChangeSettingValueBy(-10);
+                ChangeSettingValueBy(-1);
                 RefreshDisplayedSetting();
             }
         }

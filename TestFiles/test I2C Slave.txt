@@ -1,0 +1,20 @@
+
+#include <arduino.h>
+#include <Wire.h>
+#include <Adafruit_I2CDevice.h>
+#include <Adafruit_SPIDevice.h>
+
+void requestEvent() {
+    Wire.write("hello "); // respond with message of 6 bytes
+    // as expected by master
+}
+
+void setup() {
+    Wire.begin(8);                // join i2c bus with address #8
+    Wire.onRequest(requestEvent); // register event
+}
+
+
+void loop() {
+    delay(100);
+}
