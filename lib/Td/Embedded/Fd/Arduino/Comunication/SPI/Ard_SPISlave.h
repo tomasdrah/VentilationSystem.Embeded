@@ -11,7 +11,7 @@ namespace TdEmbeddedFd {
 
     class Ard_SPISlave : public SPISlave {
     public:
-        bool TryToInitialize() override {
+        bool TryToInitializeSlave() override {
             // have to send on master in, *slave out*
             pinMode(MISO, OUTPUT);
             // turn on SPI in slave mode

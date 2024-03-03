@@ -35,7 +35,7 @@ void setup() {
     A_pin.setState(TdEmbeddedFd::PinState::Off);
     Serial.println((testGetState(&A_pin) == TdEmbeddedFd::PinState::On) ? "On" : "Off");
 
-    main_thermometer.TryToInitialize();
+    main_thermometer.TryToInitializeMaster();
 }
 
 

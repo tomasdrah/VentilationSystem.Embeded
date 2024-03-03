@@ -6,7 +6,7 @@
 TdEmbeddedFd::Ard_LiquidCrystalDisplayI2C lcd = TdEmbeddedFd::Ard_LiquidCrystalDisplayI2C(); // Change to (0x27,20,4) for 20x4 LCD.
 
 void setup() {
-    lcd.TryToInitialize();
+    lcd.TryToInitializeMaster();
 }
 
 void loop() {

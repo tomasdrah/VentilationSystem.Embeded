@@ -7,17 +7,18 @@
 
 #include "Embedded/Fd/Bases/Comunication/SPI/SPIMaster.h"
 #include "Embedded/Fd/Bases/IoPin.h"
+#include<SPI.h>
 
 namespace TdEmbeddedFd {
 
     class Ard_SPIMaster : public SPIMaster {
     public:
-        bool TryToInitialize() override {
+        bool TryToInitializeMaster() override {
             SPIClass::begin();
             return true;
         }
 
-        bool TryToInitialize(SPITransactionSettings settings) override {
+        bool TryToInitializeMaster(SPITransactionSettings settings) override {
             SPIClass::begin();
             BeginTransaction(settings);
             return true;
@@ -37,7 +38,7 @@ namespace TdEmbeddedFd {
             pin->setState(PinState::On);
         }
 
-        void TransferByte(unsigned char data) override {
+        unsigned char TransferByte(unsigned char data) override {
             SPIClass::transfer(data);
         }
 
@@ -45,8 +46,12 @@ namespace TdEmbeddedFd {
             StartCommunicationWithSlave(pin);
 
             char c;
-            for (const char *p = data; (c = *p); p++)
-                TransferByte(c);
+            for (const char *p = data; (c = *p); p++) {
+                char resp = (char) TransferByte(c);
+                Serial.print(resp);
+            }
+            Serial.println();
+
 
             StopCommunicationWithSlave(pin);
         }

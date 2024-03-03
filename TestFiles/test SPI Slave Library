@@ -19,12 +19,13 @@ TdEmbeddedFd::Ard_SPISlave MySpiSlave = TdEmbeddedFd::Ard_SPISlave();
 // SPI interrupt routine
 ISR (SPI_STC_vect) {
     MySpiSlave.NewByteInterruptEvent();
+    SPDR = 's';
 }
 
 
 void setup(void) {
     Serial.begin(9600);
-    MySpiSlave.TryToInitialize();
+    MySpiSlave.TryToInitializeSlave();
 }
 
 

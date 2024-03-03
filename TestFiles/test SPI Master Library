@@ -14,7 +14,7 @@ TdEmbeddedFd::Ard_SPIMaster MySpiMaster = TdEmbeddedFd::Ard_SPIMaster();
 TdEmbeddedFd::Ard_IoPin MySlaveSS1Pin = TdEmbeddedFd::Ard_IoPin(10, OUTPUT);
 
 void setup(void) {
-    MySpiMaster.TryToInitialize(TdEmbeddedFd::SPITransactionSettings(9600));
+    MySpiMaster.TryToInitializeMaster(TdEmbeddedFd::SPITransactionSettings(9600));
 }
 
 void loop(void) {

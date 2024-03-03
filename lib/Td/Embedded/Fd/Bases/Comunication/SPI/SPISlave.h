@@ -9,7 +9,7 @@ namespace TdEmbeddedFd {
 
     class SPISlave {
     public:
-        virtual bool TryToInitialize() = 0;
+        virtual bool TryToInitializeSlave() = 0;
 
         virtual bool IsMessageReadyToRead() = 0;
 

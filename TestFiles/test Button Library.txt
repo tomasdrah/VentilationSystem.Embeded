@@ -15,7 +15,7 @@ TdEmbeddedFd::Ind_Button MyButton = TdEmbeddedFd::Ind_Button(&MyButtonPin, MyLoo
 
 void setup() {
     Serial.begin(9600);
-    lcd.TryToInitialize();
+    lcd.TryToInitializeMaster();
 }
 
 int LoopCounter = 0;
