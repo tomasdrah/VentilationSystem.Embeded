@@ -12,23 +12,25 @@
 
 namespace TdEmbeddedFd {
 
-    class Ard_Bmp280 :public  Thermometer {
+    class Ard_Bmp280 : public Thermometer {
     public:
 
-        Ard_Bmp280() = default;
-        explicit Ard_Bmp280(int address) : address(address) {}
+        explicit Ard_Bmp280(Adafruit_BMP280 *bmp280) : bmp(bmp) {}
+
+        explicit Ard_Bmp280(Adafruit_BMP280 *bmp280, int address) : address(address), bmp(bmp) {}
+
 
         float ReadTemperatureCelsius() override {
-            return bmp.readTemperature();
+            return bmp->readTemperature();
         }
 
         bool TryToInitialize() override {
-            return bmp.begin(address);
+            return bmp->begin(address);
         }
 
     private:
         int address = 0x76;
-        Adafruit_BMP280 bmp;
+        Adafruit_BMP280 *bmp;
     };
 
 } // TdEmbeddedFd
