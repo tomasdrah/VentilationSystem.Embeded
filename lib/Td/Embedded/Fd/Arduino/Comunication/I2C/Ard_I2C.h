@@ -45,7 +45,6 @@ namespace TdEmbeddedFd {
         }
 
         void Write(unsigned char byte) override {
-            Wire.flush()
             Wire.write(byte);
         }
 

@@ -30,13 +30,24 @@ TdEmbeddedFd::Ind_Button DownButton = TdEmbeddedFd::Ind_Button(&DownButtonPin, M
 TdEmbeddedFd::Device_I2CIntSettingWithDisplay settingWithDisplay = TdEmbeddedFd::Device_I2CIntSettingWithDisplay(&lcd_line0,&lcd_line1,&NextButton,&PreviousButton,&UpButton,&DownButton,3);
 
 
-TdEmbeddedFd::Ard_I2C MyI2CSlave = TdEmbeddedFd::Ard_I2C(1000,10);
+TdEmbeddedFd::Ard_I2C I2C_Slave = TdEmbeddedFd::Ard_I2C(1000, 8);
+
+void I2CRequestEvent() {
+    I2C_Slave.Write(settingWithDisplay.GetSetting(0));
+    I2C_Slave.Write(settingWithDisplay.GetSetting(1));
+    I2C_Slave.Write(settingWithDisplay.GetSetting(2));
+}
+
 
 void setup() {
     Serial.begin(9600);
+
     lcd_line0.TryToInitialize();
     lcd_line1.TryToInitialize();
     settingWithDisplay.TryToTryToInitialize();
+
+    I2C_Slave.TryToInitialize();
+    I2C_Slave.RegisterOnRequestEvent(I2CRequestEvent);
 }
 
 
