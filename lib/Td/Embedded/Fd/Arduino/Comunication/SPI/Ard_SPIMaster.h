@@ -39,7 +39,7 @@ namespace TdEmbeddedFd {
         }
 
         unsigned char TransferByte(unsigned char data) override {
-            SPIClass::transfer(data);
+            return SPIClass::transfer(data);
         }
 
         void SendConstText(IoPin *pin, const char *data) override {

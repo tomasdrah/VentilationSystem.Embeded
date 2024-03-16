@@ -57,11 +57,10 @@ namespace TdEmbeddedFd {
 
         void SetNewCommandId(char commandId) {
             ActualCommandId = commandId;
-            CommandIsNew = true;
         }
 
         bool GetIsCommandNew() {
-            return CommandIsNew;
+            return ActualCommandId > 0 and CommandIsStarted == false and CommandIsFinished == false;
         }
 
         bool IsCommandStarted() {
@@ -86,11 +85,17 @@ namespace TdEmbeddedFd {
             Args.Clear();
             Response.Clear();
 
-            CommandIsNew = false;
             CommandIsStarted = false;
             CommandIsFinished = false;
         }
 
+        bool GetIsCommandFreeToTake() {
+            return ActualCommandId > 0;
+        }
+
+        bool HasResponse() {
+            return Response.ArrayLength > 0;
+        }
 
         DataArray *GetArgs() {
             return &Args;
@@ -122,7 +127,6 @@ namespace TdEmbeddedFd {
         DataArray Args = DataArray();
         DataArray Response = DataArray();
 
-        bool CommandIsNew = false;
         bool CommandIsStarted = false;
         bool CommandIsFinished = false;
     };
@@ -196,6 +200,15 @@ namespace TdEmbeddedFd {
             return false;
         }
 
+        bool HasFreeCommand() {
+            for (auto &command: Commands) {
+                if (not command.GetIsCommandFreeToTake()) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         char GetNewCommandId() {
             for (auto &command: Commands) {
                 if (command.GetIsCommandNew()) {
@@ -217,7 +230,7 @@ namespace TdEmbeddedFd {
         char GetNewCommandPositionId() {
             for (unsigned char i = 0; i < CommandsBuffer; ++i) {
                 if (Commands[i].GetIsCommandNew()) {
-                    return (char)i;
+                    return (char) i;
                 }
             }
             return -1;
@@ -226,7 +239,16 @@ namespace TdEmbeddedFd {
         char GetFinishedCommandPositionId() {
             for (unsigned char i = 0; i < CommandsBuffer; ++i) {
                 if (Commands[i].GetIsCommandFinished()) {
-                    return (char)i;
+                    return (char) i;
+                }
+            }
+            return -1;
+        }
+
+        char GetFreeCommandPositionId() {
+            for (unsigned char i = 0; i < CommandsBuffer; ++i) {
+                if (Commands[i].GetIsCommandFreeToTake()) {
+                    return (char) i;
                 }
             }
             return -1;
@@ -235,7 +257,7 @@ namespace TdEmbeddedFd {
         char GetCommandPositionIdByCommandId(char commandId) {
             for (unsigned char i = 0; i < CommandsBuffer; ++i) {
                 if (Commands[i].GetCommandId() == commandId) {
-                    return (char)i;
+                    return (char) i;
                 }
             }
             return -1;
@@ -244,7 +266,7 @@ namespace TdEmbeddedFd {
         char GetNewCommandPositionIdByCommandId(char commandId) {
             for (unsigned char i = 0; i < CommandsBuffer; ++i) {
                 if (Commands[i].GetCommandId() == commandId and Commands[i].GetIsCommandNew()) {
-                    return (char)i;
+                    return (char) i;
                 }
             }
             return -1;
@@ -253,7 +275,7 @@ namespace TdEmbeddedFd {
         char GetFinishedCommandPositionIdByCommandId(char commandId) {
             for (unsigned char i = 0; i < CommandsBuffer; ++i) {
                 if (Commands[i].GetCommandId() == commandId and Commands[i].GetIsCommandFinished()) {
-                    return (char)i;
+                    return (char) i;
                 }
             }
             return -1;
@@ -265,6 +287,10 @@ namespace TdEmbeddedFd {
 
         Command *GetFinishedCommand() {
             return GetCommandByPositionId(GetFinishedCommandPositionId());
+        }
+
+        Command *GetFreeCommand() {
+            return GetCommandByPositionId(GetFreeCommandPositionId());
         }
 
         Command *GetNewCommandById(char commandId) {
@@ -286,7 +312,7 @@ namespace TdEmbeddedFd {
             if (commandPositionId > CommandsBuffer - 1) {
                 commandPositionId = CommandsBuffer - 1;
             }
-            return &Commands[(unsigned char)commandPositionId];
+            return &Commands[(unsigned char) commandPositionId];
         }
 
 
@@ -294,6 +320,36 @@ namespace TdEmbeddedFd {
         static constexpr char CommandsBuffer = 1;
         Command Commands[CommandsBuffer]{};
     };
+
+    class ICommandExecutor {
+    public:
+        virtual void ExecuteCommand(Command *command) = 0;
+    };
+
+    class CommandExecutionGateway {
+    public:
+        explicit CommandExecutionGateway(CommandHolder *commandHolder, ICommandExecutor *commandExecutor) : commandHolder(commandHolder),
+                                                                                                            CommandExecutor(commandExecutor) {}
+
+        void Update() {
+            while (commandHolder->HasNewCommand()) {
+                auto cmd = commandHolder->GetNewCommand();
+                cmd->SetIsCommandStarted();
+                CommandExecutor->ExecuteCommand(cmd);
+                if (cmd->HasResponse()) {
+                    cmd->SetIsCommandFinished();
+                } else {
+                    cmd->ClearTheCommand();
+                }
+            }
+        }
+
+    private:
+        CommandHolder *commandHolder;
+        ICommandExecutor *CommandExecutor;
+    };
+
+
 } // TdEmbeddedFd
 
 #endif //VENTILATIONSYSTEM_EMBEDED_COMMANDRECEIVER_H
